@@ -1,0 +1,986 @@
+{
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "q2HhbKkGUxs-",
+        "outputId": "db770685-51d5-4a99-d182-5fb587bcf1a5"
+      },
+      "outputs": [],
+      "source": [
+        "# Descarga tu repositorio desde GitHub\n",
+        "#!git clone git@github.com:Guesseppe100/Perceptron.git\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 5,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Requirement already satisfied: tensorflow in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (2.20.0)\n",
+            "Requirement already satisfied: absl-py>=1.0.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (2.3.1)\n",
+            "Requirement already satisfied: astunparse>=1.6.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (1.6.3)\n",
+            "Requirement already satisfied: flatbuffers>=24.3.25 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (25.2.10)\n",
+            "Requirement already satisfied: gast!=0.5.0,!=0.5.1,!=0.5.2,>=0.2.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (0.6.0)\n",
+            "Requirement already satisfied: google_pasta>=0.1.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (0.2.0)\n",
+            "Requirement already satisfied: libclang>=13.0.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (18.1.1)\n",
+            "Requirement already satisfied: opt_einsum>=2.3.2 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (3.4.0)\n",
+            "Requirement already satisfied: packaging in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (24.1)\n",
+            "Requirement already satisfied: protobuf>=5.28.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (6.32.1)\n",
+            "Requirement already satisfied: requests<3,>=2.21.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (2.32.3)\n",
+            "Requirement already satisfied: setuptools in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (69.5.1)\n",
+            "Requirement already satisfied: six>=1.12.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (1.16.0)\n",
+            "Requirement already satisfied: termcolor>=1.1.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (3.1.0)\n",
+            "Requirement already satisfied: typing_extensions>=3.6.6 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (4.12.2)\n",
+            "Requirement already satisfied: wrapt>=1.11.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (1.17.3)\n",
+            "Requirement already satisfied: grpcio<2.0,>=1.24.3 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (1.75.0)\n",
+            "Requirement already satisfied: tensorboard~=2.20.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (2.20.0)\n",
+            "Requirement already satisfied: keras>=3.10.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (3.10.0)\n",
+            "Requirement already satisfied: numpy>=1.26.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (2.0.2)\n",
+            "Requirement already satisfied: h5py>=3.11.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (3.14.0)\n",
+            "Requirement already satisfied: ml_dtypes<1.0.0,>=0.5.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (0.5.3)\n",
+            "Requirement already satisfied: wheel<1.0,>=0.23.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from astunparse>=1.6.0->tensorflow) (0.43.0)\n",
+            "Requirement already satisfied: rich in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from keras>=3.10.0->tensorflow) (14.1.0)\n",
+            "Requirement already satisfied: namex in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from keras>=3.10.0->tensorflow) (0.1.0)\n",
+            "Requirement already satisfied: optree in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from keras>=3.10.0->tensorflow) (0.17.0)\n",
+            "Requirement already satisfied: charset-normalizer<4,>=2 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from requests<3,>=2.21.0->tensorflow) (3.4.2)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from requests<3,>=2.21.0->tensorflow) (3.10)\n",
+            "Requirement already satisfied: urllib3<3,>=1.21.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from requests<3,>=2.21.0->tensorflow) (2.3.0)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from requests<3,>=2.21.0->tensorflow) (2025.1.31)\n",
+            "Requirement already satisfied: markdown>=2.6.8 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorboard~=2.20.0->tensorflow) (3.9)\n",
+            "Requirement already satisfied: pillow in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorboard~=2.20.0->tensorflow) (11.1.0)\n",
+            "Requirement already satisfied: tensorboard-data-server<0.8.0,>=0.7.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorboard~=2.20.0->tensorflow) (0.7.2)\n",
+            "Requirement already satisfied: werkzeug>=1.0.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorboard~=2.20.0->tensorflow) (3.1.3)\n",
+            "Requirement already satisfied: importlib-metadata>=4.4 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from markdown>=2.6.8->tensorboard~=2.20.0->tensorflow) (8.2.0)\n",
+            "Requirement already satisfied: MarkupSafe>=2.1.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from werkzeug>=1.0.1->tensorboard~=2.20.0->tensorflow) (3.0.2)\n",
+            "Requirement already satisfied: markdown-it-py>=2.2.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from rich->keras>=3.10.0->tensorflow) (3.0.0)\n",
+            "Requirement already satisfied: pygments<3.0.0,>=2.13.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from rich->keras>=3.10.0->tensorflow) (2.18.0)\n",
+            "Requirement already satisfied: zipp>=0.5 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from importlib-metadata>=4.4->markdown>=2.6.8->tensorboard~=2.20.0->tensorflow) (3.19.2)\n",
+            "Requirement already satisfied: mdurl~=0.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from markdown-it-py>=2.2.0->rich->keras>=3.10.0->tensorflow) (0.1.2)\n",
+            "Note: you may need to restart the kernel to use updated packages.\n"
+          ]
+        }
+      ],
+      "source": [
+        "%pip install tensorflow\n",
+        "import tensorflow as tf\n",
+        "from tensorflow import keras\n",
+        "import numpy as np\n",
+        "import matplotlib.pyplot as plt"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 7,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Requirement already satisfied: tensorflow in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (2.20.0)\n",
+            "Requirement already satisfied: absl-py>=1.0.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (2.3.1)\n",
+            "Requirement already satisfied: astunparse>=1.6.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (1.6.3)\n",
+            "Requirement already satisfied: flatbuffers>=24.3.25 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (25.2.10)\n",
+            "Requirement already satisfied: gast!=0.5.0,!=0.5.1,!=0.5.2,>=0.2.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (0.6.0)\n",
+            "Requirement already satisfied: google_pasta>=0.1.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (0.2.0)\n",
+            "Requirement already satisfied: libclang>=13.0.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (18.1.1)\n",
+            "Requirement already satisfied: opt_einsum>=2.3.2 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (3.4.0)\n",
+            "Requirement already satisfied: packaging in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (24.1)\n",
+            "Requirement already satisfied: protobuf>=5.28.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (6.32.1)\n",
+            "Requirement already satisfied: requests<3,>=2.21.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (2.32.3)\n",
+            "Requirement already satisfied: setuptools in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (69.5.1)\n",
+            "Requirement already satisfied: six>=1.12.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (1.16.0)\n",
+            "Requirement already satisfied: termcolor>=1.1.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (3.1.0)\n",
+            "Requirement already satisfied: typing_extensions>=3.6.6 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (4.12.2)\n",
+            "Requirement already satisfied: wrapt>=1.11.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (1.17.3)\n",
+            "Requirement already satisfied: grpcio<2.0,>=1.24.3 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (1.75.0)\n",
+            "Requirement already satisfied: tensorboard~=2.20.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (2.20.0)\n",
+            "Requirement already satisfied: keras>=3.10.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (3.10.0)\n",
+            "Requirement already satisfied: numpy>=1.26.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (2.0.2)\n",
+            "Requirement already satisfied: h5py>=3.11.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (3.14.0)\n",
+            "Requirement already satisfied: ml_dtypes<1.0.0,>=0.5.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorflow) (0.5.3)\n",
+            "Requirement already satisfied: wheel<1.0,>=0.23.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from astunparse>=1.6.0->tensorflow) (0.43.0)\n",
+            "Requirement already satisfied: rich in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from keras>=3.10.0->tensorflow) (14.1.0)\n",
+            "Requirement already satisfied: namex in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from keras>=3.10.0->tensorflow) (0.1.0)\n",
+            "Requirement already satisfied: optree in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from keras>=3.10.0->tensorflow) (0.17.0)\n",
+            "Requirement already satisfied: charset-normalizer<4,>=2 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from requests<3,>=2.21.0->tensorflow) (3.4.2)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from requests<3,>=2.21.0->tensorflow) (3.10)\n",
+            "Requirement already satisfied: urllib3<3,>=1.21.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from requests<3,>=2.21.0->tensorflow) (2.3.0)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from requests<3,>=2.21.0->tensorflow) (2025.1.31)\n",
+            "Requirement already satisfied: markdown>=2.6.8 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorboard~=2.20.0->tensorflow) (3.9)\n",
+            "Requirement already satisfied: pillow in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorboard~=2.20.0->tensorflow) (11.1.0)\n",
+            "Requirement already satisfied: tensorboard-data-server<0.8.0,>=0.7.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorboard~=2.20.0->tensorflow) (0.7.2)\n",
+            "Requirement already satisfied: werkzeug>=1.0.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from tensorboard~=2.20.0->tensorflow) (3.1.3)\n",
+            "Requirement already satisfied: importlib-metadata>=4.4 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from markdown>=2.6.8->tensorboard~=2.20.0->tensorflow) (8.2.0)\n",
+            "Requirement already satisfied: MarkupSafe>=2.1.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from werkzeug>=1.0.1->tensorboard~=2.20.0->tensorflow) (3.0.2)\n",
+            "Requirement already satisfied: markdown-it-py>=2.2.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from rich->keras>=3.10.0->tensorflow) (3.0.0)\n",
+            "Requirement already satisfied: pygments<3.0.0,>=2.13.0 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from rich->keras>=3.10.0->tensorflow) (2.18.0)\n",
+            "Requirement already satisfied: zipp>=0.5 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from importlib-metadata>=4.4->markdown>=2.6.8->tensorboard~=2.20.0->tensorflow) (3.19.2)\n",
+            "Requirement already satisfied: mdurl~=0.1 in c:\\users\\ser_s\\anaconda3\\envs\\analitica\\lib\\site-packages (from markdown-it-py>=2.2.0->rich->keras>=3.10.0->tensorflow) (0.1.2)\n",
+            "Note: you may need to restart the kernel to use updated packages.\n"
+          ]
+        }
+      ],
+      "source": [
+        "%pip install tensorflow\n",
+        "from tensorflow.keras.datasets import mnist"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 8,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Downloading data from https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz\n",
+            "\u001b[1m11490434/11490434\u001b[0m \u001b[32m━━━━━━━━━━━━━━━━━━━━\u001b[0m\u001b[37m\u001b[0m \u001b[1m1s\u001b[0m 0us/step\n"
+          ]
+        }
+      ],
+      "source": [
+        "(train_data, train_labels), (test_data, test_labels) = mnist.load_data()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 10,
+      "metadata": {},
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "(60000, 28, 28)"
+            ]
+          },
+          "execution_count": 10,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "train_data.shape"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 11,
+      "metadata": {},
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "(10000, 28, 28)"
+            ]
+          },
+          "execution_count": 11,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "test_data.shape"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 12,
+      "metadata": {},
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "(28, 28)"
+            ]
+          },
+          "execution_count": 12,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "train_data[0].shape"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 16,
+      "metadata": {},
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "<matplotlib.image.AxesImage at 0x22dc395c2b0>"
+            ]
+          },
+          "execution_count": 16,
+          "metadata": {},
+          "output_type": "execute_result"
+        },
+        {
+          "data": {
+            "image/png": "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",
+            "text/plain": [
+              "<Figure size 640x480 with 1 Axes>"
+            ]
+          },
+          "metadata": {},
+          "output_type": "display_data"
+        }
+      ],
+      "source": [
+        "plt.imshow(train_data[2], cmap='gray')"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 20,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "train_data = train_data.reshape((60000, 28 * 28))\n",
+        "train_data = train_data.astype('float32') / 255"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 21,
+      "metadata": {},
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "array([0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       4.6136101e-05, 2.7681663e-04, 2.7681663e-04, 2.7681663e-04,\n",
+              "       1.9377163e-03, 2.0915035e-03, 2.6912726e-03, 3.9984621e-04,\n",
+              "       2.5528644e-03, 3.9215689e-03, 3.7985391e-03, 1.9530950e-03,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       4.6136102e-04, 5.5363326e-04, 1.4455979e-03, 2.3683200e-03,\n",
+              "       2.6143792e-03, 3.8908112e-03, 3.8908112e-03, 3.8908112e-03,\n",
+              "       3.8908112e-03, 3.8908112e-03, 3.4602077e-03, 2.6451366e-03,\n",
+              "       3.8908112e-03, 3.7216456e-03, 2.9988466e-03, 9.8423695e-04,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 7.5355632e-04,\n",
+              "       3.6601308e-03, 3.8908112e-03, 3.8908112e-03, 3.8908112e-03,\n",
+              "       3.8908112e-03, 3.8908112e-03, 3.8908112e-03, 3.8908112e-03,\n",
+              "       3.8908112e-03, 3.8600538e-03, 1.4302192e-03, 1.2610535e-03,\n",
+              "       1.2610535e-03, 8.6120726e-04, 5.9976935e-04, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 2.7681663e-04,\n",
+              "       3.3679355e-03, 3.8908112e-03, 3.8908112e-03, 3.8908112e-03,\n",
+              "       3.8908112e-03, 3.8908112e-03, 3.0449827e-03, 2.7989235e-03,\n",
+              "       3.7985391e-03, 3.7062669e-03, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       1.2302961e-03, 2.3990774e-03, 1.6455210e-03, 3.8908112e-03,\n",
+              "       3.8908112e-03, 3.1526336e-03, 1.6916571e-04, 0.0000000e+00,\n",
+              "       6.6128414e-04, 2.3683200e-03, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 2.1530181e-04, 1.5378702e-05, 2.3683200e-03,\n",
+              "       3.8908112e-03, 1.3840831e-03, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 2.1376396e-03,\n",
+              "       3.8908112e-03, 2.9219531e-03, 3.0757405e-05, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 1.6916571e-04,\n",
+              "       2.9219531e-03, 3.8908112e-03, 1.0765091e-03, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       5.3825456e-04, 3.7062669e-03, 3.4602077e-03, 2.4605922e-03,\n",
+              "       1.6608997e-03, 1.5378702e-05, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 1.2456748e-03, 3.6908882e-03, 3.8908112e-03,\n",
+              "       3.8908112e-03, 1.8300654e-03, 3.8446751e-04, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 6.9204153e-04, 2.8604383e-03,\n",
+              "       3.8908112e-03, 3.8908112e-03, 2.3068052e-03, 4.1522493e-04,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 2.4605924e-04,\n",
+              "       1.4302192e-03, 3.8754325e-03, 3.8908112e-03, 2.8758170e-03,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 3.8292964e-03, 3.8908112e-03, 3.8292964e-03,\n",
+              "       9.8423695e-04, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 7.0742023e-04, 1.9992313e-03,\n",
+              "       2.8143022e-03, 3.8908112e-03, 3.8908112e-03, 3.1833909e-03,\n",
+              "       3.0757405e-05, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       5.9976935e-04, 2.2760478e-03, 3.5217225e-03, 3.8908112e-03,\n",
+              "       3.8908112e-03, 3.8908112e-03, 3.8446751e-03, 2.7989235e-03,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 3.6908881e-04, 1.7531719e-03,\n",
+              "       3.3986929e-03, 3.8908112e-03, 3.8908112e-03, 3.8908112e-03,\n",
+              "       3.8908112e-03, 3.0911188e-03, 1.1995387e-03, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       3.5371011e-04, 1.0149943e-03, 3.2756634e-03, 3.8908112e-03,\n",
+              "       3.8908112e-03, 3.8908112e-03, 3.8908112e-03, 3.0449827e-03,\n",
+              "       1.2456748e-03, 3.0757405e-05, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 2.7681663e-04, 2.6297579e-03,\n",
+              "       3.3679355e-03, 3.8908112e-03, 3.8908112e-03, 3.8908112e-03,\n",
+              "       3.8908112e-03, 2.9988466e-03, 1.2302961e-03, 1.3840832e-04,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       8.4582856e-04, 2.6451366e-03, 3.4755864e-03, 3.8908112e-03,\n",
+              "       3.8908112e-03, 3.8908112e-03, 3.8908112e-03, 3.7524030e-03,\n",
+              "       2.0453674e-03, 1.6916571e-04, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       2.0915035e-03, 3.8908112e-03, 3.8908112e-03, 3.8908112e-03,\n",
+              "       3.2602844e-03, 2.0761248e-03, 2.0299887e-03, 2.4605924e-04,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00],\n",
+              "      dtype=float32)"
+            ]
+          },
+          "execution_count": 21,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "train_data[0]"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 23,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "test_data = test_data.reshape((10000, 28 * 28))\n",
+        "test_data = test_data.astype('float32') / 255"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 25,
+      "metadata": {},
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "array([0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 1.2918109e-03, 2.8450596e-03,\n",
+              "       2.4452135e-03, 2.3221839e-03, 9.2272204e-04, 5.5363326e-04,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 3.4140716e-03, 3.9061899e-03,\n",
+              "       3.9061899e-03, 3.9061899e-03, 3.9061899e-03, 3.7062669e-03,\n",
+              "       3.0449827e-03, 3.0449827e-03, 3.0449827e-03, 3.0449827e-03,\n",
+              "       3.0449827e-03, 3.0449827e-03, 3.0449827e-03, 3.0449827e-03,\n",
+              "       2.6143792e-03, 7.9969241e-04, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 1.0303730e-03, 1.7531719e-03,\n",
+              "       1.1072665e-03, 1.7531719e-03, 2.5067283e-03, 3.4909651e-03,\n",
+              "       3.9061899e-03, 3.4602077e-03, 3.9061899e-03, 3.9061899e-03,\n",
+              "       3.9061899e-03, 3.8446751e-03, 3.5217225e-03, 3.9061899e-03,\n",
+              "       3.9061899e-03, 2.1530183e-03, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 2.6143793e-04,\n",
+              "       1.0149943e-03, 2.1530181e-04, 1.0303730e-03, 1.0303730e-03,\n",
+              "       1.0303730e-03, 9.0734335e-04, 3.2295272e-04, 3.6293734e-03,\n",
+              "       3.9061899e-03, 1.6301422e-03, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 1.2764322e-03, 3.8908112e-03,\n",
+              "       3.2141483e-03, 2.7681663e-04, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 3.3833142e-04, 3.5832373e-03, 3.9215689e-03,\n",
+              "       1.2764322e-03, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 1.9838526e-03, 3.9061899e-03, 3.6601308e-03,\n",
+              "       6.7666284e-04, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       9.0734335e-04, 3.8292964e-03, 3.9061899e-03, 9.5347944e-04,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       2.0453674e-03, 3.9061899e-03, 2.8758170e-03, 7.6893506e-05,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 1.3840832e-04,\n",
+              "       3.1526336e-03, 3.8139177e-03, 8.9196465e-04, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 1.9377163e-03,\n",
+              "       3.9061899e-03, 2.7989235e-03, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 1.1534026e-03, 3.8600538e-03,\n",
+              "       3.6908882e-03, 8.7658595e-04, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 2.9219533e-04, 3.3986929e-03, 3.9061899e-03,\n",
+              "       2.5528644e-03, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       4.6136101e-05, 3.1218762e-03, 3.9061899e-03, 3.3679355e-03,\n",
+              "       5.3825456e-04, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       5.8439065e-04, 3.9061899e-03, 3.9061899e-03, 1.1841600e-03,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 4.7673972e-04,\n",
+              "       3.4448290e-03, 3.9061899e-03, 1.7685506e-03, 1.5378702e-05,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 2.0453674e-03,\n",
+              "       3.9061899e-03, 3.9061899e-03, 7.9969241e-04, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 9.3810074e-04, 3.7216456e-03,\n",
+              "       3.9061899e-03, 3.9061899e-03, 7.9969241e-04, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 1.8608228e-03, 3.9061899e-03,\n",
+              "       3.9061899e-03, 3.3679355e-03, 6.1514805e-04, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 1.8608228e-03, 3.9061899e-03,\n",
+              "       3.1833909e-03, 2.7681663e-04, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00,\n",
+              "       0.0000000e+00, 0.0000000e+00, 0.0000000e+00, 0.0000000e+00],\n",
+              "      dtype=float32)"
+            ]
+          },
+          "execution_count": 25,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "test_data[0]"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 28,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "model = keras.Sequential([\n",
+        "    keras.layers.Input(shape=(28 * 28,)),\n",
+        "    keras.layers.Dense(512, activation='relu'),\n",
+        "    keras.layers.Dense(10, activation='softmax')\n",
+        "])"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 29,
+      "metadata": {},
+      "outputs": [
+        {
+          "data": {
+            "text/html": [
+              "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"font-weight: bold\">Model: \"sequential_2\"</span>\n",
+              "</pre>\n"
+            ],
+            "text/plain": [
+              "\u001b[1mModel: \"sequential_2\"\u001b[0m\n"
+            ]
+          },
+          "metadata": {},
+          "output_type": "display_data"
+        },
+        {
+          "data": {
+            "text/html": [
+              "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓\n",
+              "┃<span style=\"font-weight: bold\"> Layer (type)                    </span>┃<span style=\"font-weight: bold\"> Output Shape           </span>┃<span style=\"font-weight: bold\">       Param # </span>┃\n",
+              "┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩\n",
+              "│ dense_3 (<span style=\"color: #0087ff; text-decoration-color: #0087ff\">Dense</span>)                 │ (<span style=\"color: #00d7ff; text-decoration-color: #00d7ff\">None</span>, <span style=\"color: #00af00; text-decoration-color: #00af00\">512</span>)            │       <span style=\"color: #00af00; text-decoration-color: #00af00\">401,920</span> │\n",
+              "├─────────────────────────────────┼────────────────────────┼───────────────┤\n",
+              "│ dense_4 (<span style=\"color: #0087ff; text-decoration-color: #0087ff\">Dense</span>)                 │ (<span style=\"color: #00d7ff; text-decoration-color: #00d7ff\">None</span>, <span style=\"color: #00af00; text-decoration-color: #00af00\">10</span>)             │         <span style=\"color: #00af00; text-decoration-color: #00af00\">5,130</span> │\n",
+              "└─────────────────────────────────┴────────────────────────┴───────────────┘\n",
+              "</pre>\n"
+            ],
+            "text/plain": [
+              "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓\n",
+              "┃\u001b[1m \u001b[0m\u001b[1mLayer (type)                   \u001b[0m\u001b[1m \u001b[0m┃\u001b[1m \u001b[0m\u001b[1mOutput Shape          \u001b[0m\u001b[1m \u001b[0m┃\u001b[1m \u001b[0m\u001b[1m      Param #\u001b[0m\u001b[1m \u001b[0m┃\n",
+              "┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩\n",
+              "│ dense_3 (\u001b[38;5;33mDense\u001b[0m)                 │ (\u001b[38;5;45mNone\u001b[0m, \u001b[38;5;34m512\u001b[0m)            │       \u001b[38;5;34m401,920\u001b[0m │\n",
+              "├─────────────────────────────────┼────────────────────────┼───────────────┤\n",
+              "│ dense_4 (\u001b[38;5;33mDense\u001b[0m)                 │ (\u001b[38;5;45mNone\u001b[0m, \u001b[38;5;34m10\u001b[0m)             │         \u001b[38;5;34m5,130\u001b[0m │\n",
+              "└─────────────────────────────────┴────────────────────────┴───────────────┘\n"
+            ]
+          },
+          "metadata": {},
+          "output_type": "display_data"
+        },
+        {
+          "data": {
+            "text/html": [
+              "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"font-weight: bold\"> Total params: </span><span style=\"color: #00af00; text-decoration-color: #00af00\">407,050</span> (1.55 MB)\n",
+              "</pre>\n"
+            ],
+            "text/plain": [
+              "\u001b[1m Total params: \u001b[0m\u001b[38;5;34m407,050\u001b[0m (1.55 MB)\n"
+            ]
+          },
+          "metadata": {},
+          "output_type": "display_data"
+        },
+        {
+          "data": {
+            "text/html": [
+              "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"font-weight: bold\"> Trainable params: </span><span style=\"color: #00af00; text-decoration-color: #00af00\">407,050</span> (1.55 MB)\n",
+              "</pre>\n"
+            ],
+            "text/plain": [
+              "\u001b[1m Trainable params: \u001b[0m\u001b[38;5;34m407,050\u001b[0m (1.55 MB)\n"
+            ]
+          },
+          "metadata": {},
+          "output_type": "display_data"
+        },
+        {
+          "data": {
+            "text/html": [
+              "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"font-weight: bold\"> Non-trainable params: </span><span style=\"color: #00af00; text-decoration-color: #00af00\">0</span> (0.00 B)\n",
+              "</pre>\n"
+            ],
+            "text/plain": [
+              "\u001b[1m Non-trainable params: \u001b[0m\u001b[38;5;34m0\u001b[0m (0.00 B)\n"
+            ]
+          },
+          "metadata": {},
+          "output_type": "display_data"
+        }
+      ],
+      "source": [
+        "model.summary()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 33,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "model.compile(optimizer='rmsprop'  ,\n",
+        "              loss='sparse_categorical_crossentropy',\n",
+        "              metrics=['accuracy'])"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 35,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Epoch 1/5\n",
+            "\u001b[1m469/469\u001b[0m \u001b[32m━━━━━━━━━━━━━━━━━━━━\u001b[0m\u001b[37m\u001b[0m \u001b[1m3s\u001b[0m 7ms/step - accuracy: 0.8530 - loss: 0.5480\n",
+            "Epoch 2/5\n",
+            "\u001b[1m469/469\u001b[0m \u001b[32m━━━━━━━━━━━━━━━━━━━━\u001b[0m\u001b[37m\u001b[0m \u001b[1m5s\u001b[0m 7ms/step - accuracy: 0.8661 - loss: 0.4871\n",
+            "Epoch 3/5\n",
+            "\u001b[1m469/469\u001b[0m \u001b[32m━━━━━━━━━━━━━━━━━━━━\u001b[0m\u001b[37m\u001b[0m \u001b[1m5s\u001b[0m 7ms/step - accuracy: 0.8765 - loss: 0.4504\n",
+            "Epoch 4/5\n",
+            "\u001b[1m469/469\u001b[0m \u001b[32m━━━━━━━━━━━━━━━━━━━━\u001b[0m\u001b[37m\u001b[0m \u001b[1m3s\u001b[0m 7ms/step - accuracy: 0.8805 - loss: 0.4270\n",
+            "Epoch 5/5\n",
+            "\u001b[1m469/469\u001b[0m \u001b[32m━━━━━━━━━━━━━━━━━━━━\u001b[0m\u001b[37m\u001b[0m \u001b[1m3s\u001b[0m 7ms/step - accuracy: 0.8868 - loss: 0.4041\n"
+          ]
+        },
+        {
+          "data": {
+            "text/plain": [
+              "<keras.src.callbacks.history.History at 0x22dc37e9370>"
+            ]
+          },
+          "execution_count": 35,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "model.fit(train_data, train_labels, epochs=5, batch_size=128, verbose=1)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 36,
+      "metadata": {},
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "\u001b[1m1/1\u001b[0m \u001b[32m━━━━━━━━━━━━━━━━━━━━\u001b[0m\u001b[37m\u001b[0m \u001b[1m0s\u001b[0m 129ms/step\n"
+          ]
+        }
+      ],
+      "source": [
+        "test_digits = test_data[0:10]\n",
+        "predictions = model.predict(test_digits)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 37,
+      "metadata": {},
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "np.uint8(7)"
+            ]
+          },
+          "execution_count": 37,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "test_labels[0]"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 38,
+      "metadata": {},
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "np.int64(7)"
+            ]
+          },
+          "execution_count": 38,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "predictions[0].argmax()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 39,
+      "metadata": {},
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "(10,)"
+            ]
+          },
+          "execution_count": 39,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "predictions[0].shape"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 40,
+      "metadata": {},
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "<matplotlib.image.AxesImage at 0x22dc642a040>"
+            ]
+          },
+          "execution_count": 40,
+          "metadata": {},
+          "output_type": "execute_result"
+        },
+        {
+          "data": {
+            "image/png": "iVBORw0KGgoAAAANSUhEUgAAAaAAAAGdCAYAAABU0qcqAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjkuNCwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy8ekN5oAAAACXBIWXMAAA9hAAAPYQGoP6dpAAAYyElEQVR4nO3dfYwV1d0H8N9KYUWFRURYtiwIvkcFq0UkqI8KAbUxojTR6h/QGIgWTZH6UhrxrU22pYk1Noj/NFIT3xPRaBpSRYFYQQOWElqlQmmB8OJb2QUsaGGezBj2YQX0uesuZ/fezyc5uTv3ztkZhrP3e8/MmXOrsizLAgAOsyMO9wYBICeAAEhCAAGQhAACIAkBBEASAgiAJAQQAEkIIACS+FZ0MHv37o1NmzZFjx49oqqqKvXuAFCifH6D7du3R11dXRxxxBGdJ4Dy8Kmvr0+9GwB8Qxs2bIgBAwZ0nlNwec8HgM7v697P2y2AZs+eHSeccEIceeSRMWLEiHj77bf/X/WcdgMoD1/3ft4uAfTMM8/E9OnT495774133nknhg0bFuPGjYsPPvigPTYHQGeUtYPzzjsvmzp1avPynj17srq6uqyhoeFr6zY2NuazcyuKoijRuUv+fv5V2rwH9Nlnn8Xy5ctjzJgxzc/loyDy5SVLlhyw/u7du6OpqalFAaD8tXkAffTRR7Fnz57o169fi+fz5S1bthywfkNDQ9TU1DQXI+AAKkPyUXAzZsyIxsbG5pIP2wOg/LX5fUB9+vSJLl26xNatW1s8ny/X1tYesH51dXVRAKgsbd4D6tatW5x77rmxYMGCFrMb5MsjR45s680B0Em1y0wI+RDsiRMnxne/+90477zz4qGHHoqdO3fGD3/4w/bYHACdULsE0LXXXhsffvhh3HPPPcXAg7PPPjvmz59/wMAEACpXVT4WOzqQfBh2PhoOgM4tH1jWs2fPjjsKDoDKJIAASEIAAZCEAAIgCQEEQBICCIAkBBAASQggAJIQQAAkIYAASEIAAZCEAAIgCQEEQBICCIAkBBAASQggAJIQQAAkIYAASEIAAZCEAAIgCQEEQBICCIAkBBAASQggAJIQQAAkIYAASEIAAZCEAAIgCQEEQBICCIAkBBAASQggAJIQQAAkIYAASEIAAZCEAAIgCQEEQBICCIAkBBAASQggAJIQQAAkIYAASEIAAZCEAAIgCQEEQBICCIAkBBAASQggAJIQQAAkIYAASEIAAZCEAAIgCQEEQBICCIAkBBAA5RFA9913X1RVVbUop512WltvBoBO7lvt8UvPOOOMePXVV/9vI99ql80A0Im1SzLkgVNbW9sevxqAMtEu14Def//9qKuriyFDhsQNN9wQ69evP+S6u3fvjqamphYFgPLX5gE0YsSImDt3bsyfPz/mzJkT69atiwsvvDC2b99+0PUbGhqipqamudTX17f1LgHQAVVlWZa15wa2bdsWgwYNigcffDBuvPHGg/aA8rJP3gMSQgCdX2NjY/Ts2fOQr7f76IBevXrFKaecEmvWrDno69XV1UUBoLK0+31AO3bsiLVr10b//v3be1MAVHIA3X777bFo0aL45z//GW+++WZcffXV0aVLl/jBD37Q1psCoBNr81NwGzduLMLm448/juOPPz4uuOCCWLp0afEzABy2QQilygch5KPhACjvQQjmggMgCQEEQBICCIAkBBAASQggAJIQQAAkIYAASEIAAZCEAAIgCQEEQBICCIAkBBAASbT7F9JxeH3/+98vuc7kyZNbta1NmzaVXGfXrl0l13niiSdKrrNly5ZojUN9cSLQ9vSAAEhCAAGQhAACIAkBBEASAgiAJAQQAEkIIACSEEAAJCGAAEhCAAGQhAACIAkBBEASAgiAJKqyLMuiA2lqaoqamprUu9Fp/eMf/yi5zgknnBDlZvv27a2q99e//rXN94W2tXHjxpLrzJo1q1XbWrZsWavq8YXGxsbo2bNnHIoeEABJCCAAkhBAACQhgABIQgABkIQAAiAJAQRAEgIIgCQEEABJCCAAkhBAACQhgABI4ltpNkt7mTx5csl1hg4d2qptvfvuuyXXOf3000uuc84555Rc5+KLL47WOP/880uus2HDhpLr1NfXR0f23//+t+Q6H374Ycl1+vfvH4fD+vXrW1XPZKTtSw8IgCQEEABJCCAAkhBAACQhgABIQgABkIQAAiAJAQRAEgIIgCQEEABJCCAAkhBAACRhMtIys2DBgsNSp7Xmz59/WLZz7LHHtqre2WefXXKd5cuXl1xn+PDh0ZHt2rWr5Dp///vfD8uEtr179y65ztq1a0uuQ/vTAwIgCQEEQOcIoMWLF8eVV14ZdXV1UVVVFS+88EKL17Msi3vuuaf4no/u3bvHmDFj4v3332/LfQagEgNo586dMWzYsJg9e/ZBX581a1Y8/PDD8eijj8Zbb70VRx99dIwbN65V55QBKF8lD0K4/PLLi3Iwee/noYceirvvvjuuuuqq4rnHH388+vXrV/SUrrvuum++xwCUhTa9BrRu3brYsmVLcdptn5qamhgxYkQsWbLkoHV2794dTU1NLQoA5a9NAygPn1ze49lfvrzvtS9raGgoQmpfqa+vb8tdAqCDSj4KbsaMGdHY2NhcNmzYkHqXAOhsAVRbW1s8bt26tcXz+fK+176suro6evbs2aIAUP7aNIAGDx5cBM3+d9bn13Ty0XAjR45sy00BUGmj4Hbs2BFr1qxpMfBgxYoVxfQYAwcOjGnTpsUvfvGLOPnkk4tAmjlzZnHP0Pjx49t63wGopABatmxZXHLJJc3L06dPLx4nTpwYc+fOjTvvvLO4V2jKlCmxbdu2uOCCC4r5v4488si23XMAOrWqLL95pwPJT9nlo+GAzmXChAkl13n22WdLrrNq1aqS6+z/obkUn3zySavq8YV8YNlXXddPPgoOgMokgABIQgABkIQAAiAJAQRAEgIIgCQEEABJCCAAkhBAACQhgABIQgABkIQAAiAJAQRA5/g6BqD89e3bt+Q6jzzySMl1jjii9M/ADzzwQMl1zGrdMekBAZCEAAIgCQEEQBICCIAkBBAASQggAJIQQAAkIYAASEIAAZCEAAIgCQEEQBICCIAkTEYKHGDq1Kkl1zn++ONLrvPvf/+75DqrV68uuQ4dkx4QAEkIIACSEEAAJCGAAEhCAAGQhAACIAkBBEASAgiAJAQQAEkIIACSEEAAJCGAAEjCZKRQxkaNGtWqej/96U/jcBg/fnzJdVatWtUu+8LhpwcEQBICCIAkBBAASQggAJIQQAAkIYAASEIAAZCEAAIgCQEEQBICCIAkBBAASQggAJIwGSmUsSuuuKJV9bp27VpynQULFpRcZ8mSJSXXoXzoAQGQhAACoHME0OLFi+PKK6+Murq6qKqqihdeeKHF65MmTSqe379cdtllbbnPAFRiAO3cuTOGDRsWs2fPPuQ6eeBs3ry5uTz11FPfdD8BqPRBCJdffnlRvkp1dXXU1tZ+k/0CoMy1yzWghQsXRt++fePUU0+Nm2++OT7++ONDrrt79+5oampqUQAof20eQPnpt8cff7wYkvmrX/0qFi1aVPSY9uzZc9D1GxoaoqamprnU19e39S4BUAn3AV133XXNP5911lkxdOjQOPHEE4te0ejRow9Yf8aMGTF9+vTm5bwHJIQAyl+7D8MeMmRI9OnTJ9asWXPI60U9e/ZsUQAof+0eQBs3biyuAfXv37+9NwVAOZ+C27FjR4vezLp162LFihXRu3fvotx///0xYcKEYhTc2rVr484774yTTjopxo0b19b7DkAlBdCyZcvikksuaV7ed/1m4sSJMWfOnFi5cmX8/ve/j23bthU3q44dOzZ+/vOfF6faAGCfqizLsuhA8kEI+Wg4oKXu3buXXOeNN95o1bbOOOOMkutceumlJdd58803S65D59HY2PiV1/XNBQdAEgIIgCQEEABJCCAAkhBAACQhgABIQgABkIQAAiAJAQRAEgIIgCQEEABJCCAAkhBAAJTHV3ID7eOOO+4ouc53vvOdVm1r/vz5JdcxszWl0gMCIAkBBEASAgiAJAQQAEkIIACSEEAAJCGAAEhCAAGQhAACIAkBBEASAgiAJAQQAEmYjBQS+N73vldynZkzZ5Zcp6mpKVrjgQceaFU9KIUeEABJCCAAkhBAACQhgABIQgABkIQAAiAJAQRAEgIIgCQEEABJCCAAkhBAACQhgABIwmSk8A0dd9xxJdd5+OGHS67TpUuXkuv84Q9/iNZYunRpq+pBKfSAAEhCAAGQhAACIAkBBEASAgiAJAQQAEkIIACSEEAAJCGAAEhCAAGQhAACIAkBBEASJiOFbzjh5/z580uuM3jw4JLrrF27tuQ6M2fOLLkOHC56QAAkIYAA6PgB1NDQEMOHD48ePXpE3759Y/z48bF69eoW6+zatSumTp1afEfKMcccExMmTIitW7e29X4DUEkBtGjRoiJc8i+reuWVV+Lzzz+PsWPHxs6dO5vXue222+Kll16K5557rlh/06ZNcc0117THvgNQKYMQvnyxde7cuUVPaPny5XHRRRdFY2Nj/O53v4snn3wyLr300mKdxx57LE4//fQitM4///y23XsAKvMaUB44ud69exePeRDlvaIxY8Y0r3PaaafFwIEDY8mSJQf9Hbt3746mpqYWBYDy1+oA2rt3b0ybNi1GjRoVZ555ZvHcli1bolu3btGrV68W6/br16947VDXlWpqappLfX19a3cJgEoIoPxa0KpVq+Lpp5/+RjswY8aMoie1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",
+            "text/plain": [
+              "<Figure size 640x480 with 1 Axes>"
+            ]
+          },
+          "metadata": {},
+          "output_type": "display_data"
+        }
+      ],
+      "source": [
+        "test_image = test_digits[0].reshape(28, 28)\n",
+        "plt.imshow(test_image, cmap='gray')"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Segundo Modelo"
+      ]
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "display_name": "Analitica",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.9.19"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
